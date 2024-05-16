@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDAO {
-    private static final String URL = "jdbc:mysql://localhost:3306/events";
+    private static final String URL = "jdbc:mysql://localhost:800/events";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
@@ -24,16 +24,15 @@ public class EventDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Event event = new Event();
-                event.setEventId(rs.getInt("EventId"));
-                event.setTitle(rs.getString("Title"));
+                event.setEventId(rs.getInt("Eventid"));
+                event.setTitle(rs.getString("Titre"));
                 event.setDescription(rs.getString("Description"));
                 event.setDate(rs.getDate("Date"));
-                event.setLieu(rs.getString("Location"));
+                event.setLieu(rs.getString("Lieu"));
                 event.setType(rs.getString("Type"));
                 event.setStatus(rs.getString("Status"));
-                event.setPrix(rs.getFloat("Price"));
-                event.setCapacite(rs.getInt("Capacity"));
-                // Set other properties as needed
+                event.setPrix(rs.getFloat("Prix"));
+                event.setCapacite(rs.getInt("Capacite"));
                 events.add(event);
             }
         }
