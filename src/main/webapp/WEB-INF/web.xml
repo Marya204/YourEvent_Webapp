@@ -1,42 +1,73 @@
-package Model;
-
-
-import java.sql.*;
-
-public class UserDAO {
-    private static final String URL = "jdbc:mysql://localhost:3306/events";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
-
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-
-    public User authenticate(String email, String password) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT email, password FROM user WHERE email = ? AND password = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new User(rs.getString("email"), rs.getString("password"));
-                }
-            }
-        }
-        return null;
-    }
-
-    public void resetPassword(String email, String newPassword) throws SQLException, ClassNotFoundException {
-        String sql = "UPDATE user SET password = ? WHERE email = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, newPassword);
-            stmt.setString(2, email);
-            stmt.executeUpdate();
-        }
-    }
-    
-   
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" version="6.0">
+  <display-name>YourEvent</display-name>
+  <welcome-file-list>
+    <welcome-file>login.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>ResetPassServlet</display-name>
+    <servlet-name>ResetPassServlet</servlet-name>
+    <servlet-class>YourEvent.ResetPassServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ResetPassServlet</servlet-name>
+    <url-pattern>/ResetPassServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EventStatServlet</display-name>
+    <servlet-name>EventStatServlet</servlet-name>
+    <servlet-class>YourEvent.EventStatServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EventStatServlet</servlet-name>
+    <url-pattern>/EventStatServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LoginServlet</display-name>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>Controller.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ResetPassController</display-name>
+    <servlet-name>ResetPassController</servlet-name>
+    <servlet-class>Controller.ResetPass</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ResetPassController</servlet-name>
+    <url-pattern>/ResetPassController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EventServlet</display-name>
+    <servlet-name>EventServlet</servlet-name>
+    <servlet-class>Controller.EventServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EventServlet</servlet-name>
+    <url-pattern>/EventServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LogoutServlet</display-name>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>Controller.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/LogoutServlet</url-pattern>
+  </servlet-mapping>
+</web-app>
