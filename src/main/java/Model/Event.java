@@ -1,103 +1,114 @@
-package Model;
+package model;
+
 import java.sql.Date;
+
 public class Event {
-    private int Eventid;
-    private String Titre;
-    private String Description;
-    private Date Date;
-    private String Lieu;
-    private String Type;
-    private String Status;
-    private float Prix;
-    private int Capacite;
+    private int eventid;
+    private String titre;
+    private String description;
+    private java.util.Date date;
+    private String lieu;
+    private String type;
+    private String status;
+    private float prix;
+    private int capacite;
     
-   // Add more fields as needed
-    // Constructors
-    public Event() {
-    }
-    public Event(int Eventid, String Titre, String Description,Date Date,String Lieu,String Type,String Status,float Prix,int Capacite) {
-        this.Eventid = Eventid;
-        this.Titre = Titre;
-        this.Date = Date;
-        this.Lieu = Lieu;
-        this.Type=Type;
-        this.Status = Status;
-        this.Prix = Prix;
-        this.Capacite = Capacite;
+    // Parameterized constructor
+    public Event(int eventid, String titre, String description, java.util.Date date, String lieu, String type, String status, float prix, int capacite) {
+        this.eventid = eventid;
+        this.titre = titre;
+        this.description = description;
+        this.date = date;
+        this.lieu = lieu;
+        this.type = type;
+        this.status = status;
+        this.prix = prix;
+        this.capacite = capacite;
     }
     
+     public Event(String titre, String description, java.util.Date date, String lieu, String type, String status, float prix, int capacite) {
+        this.titre = titre;
+        this.description = description;
+        this.date = date;
+        this.lieu = lieu;
+        this.type = type;
+        this.status = status;
+        this.prix = prix;
+        this.capacite = capacite;
+    }
+
     // Getters and setters
-    public int getEventId() {
-        return Eventid;
+    public int getEventid() {
+        return eventid;
     }
 
-    public void setEventId(int eventId) {
-        this.Eventid = eventId;
+    public void setEventid(int eventid) {
+        this.eventid = eventid;
     }
 
-    public String getTitle() {
-        return Titre;
+    public String getTitre() {
+        return titre;
     }
 
-    public void setTitle(String title) {
-        this.Titre = title;
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        this.Description = description;
+        this.description = description;
     }
 
-	public Date getDate() {
-		return Date;
-	}
+    public java.util.Date getDate() {
+        return date;
+    }
 
-	public void setDate(Date date) {
-		Date = date;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public String getLieu() {
-		return Lieu;
-	}
+    public String getLieu() {
+        return lieu;
+    }
 
-	public void setLieu(String lieu) {
-		Lieu = lieu;
-	}
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
+    }
 
-	public String getType() {
-		return Type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		Type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getStatus() {
-		return Status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setStatus(String status) {
-		Status = status;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public float getPrix() {
-		return Prix;
-	}
+    public float getPrix() {
+        return prix;
+    }
 
-	public void setPrix(float prix) {
-		Prix = prix;
-	}
+    public void setPrix(float prix) {
+        this.prix = prix;
+    }
 
-	public int getCapacite() {
-		return Capacite;
-	}
+    public int getCapacite() {
+        return capacite;
+    }
 
-	public void setCapacite(int capacite) {
-		Capacite = capacite;
-	}
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
+    }
 
     // Add more getters and setters for additional fields as needed
 }
