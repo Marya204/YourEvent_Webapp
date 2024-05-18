@@ -3,22 +3,47 @@ package Controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import Model.Ticket;
-import Model.TicketDAO;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import model.TicketDAO;
+import model.Ticket;
+
+@WebServlet("/TicketServlet")
 public class TicketServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    private static final long serialVersionUID = 1L;
+
+    TicketDAO dao;
+
+    public TicketServlet() throws ClassNotFoundException, SQLException {
+        super();
+        dao = new TicketDAO();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        
-        if (action != null) {
+
+        if (action == null) {
+            action = "list"; // Par défaut, afficher la liste des billets
+        }
+
+        try {
             switch (action) {
+                case "list":
+                    listTickets(request, response);
+                    break;
                 case "add":
+                    showAddForm(request, response);
+                    break;
+                case "insert":
                     addTicket(request, response);
+                    break;
+                case "edit":
+                    showEditForm(request, response);
                     break;
                 case "update":
                     updateTicket(request, response);
@@ -27,86 +52,79 @@ public class TicketServlet extends HttpServlet {
                     deleteTicket(request, response);
                     break;
                 default:
-                    // Action non valide
-                    response.sendRedirect("tickets.jsp");
+                    listTickets(request, response);
                     break;
             }
-        } else {
-            // Action non spécifiée
-            response.sendRedirect("tickets.jsp");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendRedirect("error.jsp");
         }
     }
-    
-    // Méthode pour ajouter un billet
-    private void addTicket(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        // Récupérer les données du formulaire
-        int eventId = Integer.parseInt(request.getParameter("eventId"));
-        int inviteId = Integer.parseInt(request.getParameter("inviteId"));
-        double price = Double.parseDouble(request.getParameter("price"));
-        String status = request.getParameter("status");
-        
-        // Créer un nouvel objet Ticket avec les données récupérées
-        Ticket newTicket = new Ticket();
-        newTicket.setEventId(eventId);
-        newTicket.setInviteId(inviteId);
-        newTicket.setPrice(price);
-        newTicket.setStatus(status);
-        
-        // Ajouter le nouveau billet à la base de données
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Ticket ticket = new Ticket();
+        ticket.setId(Integer.parseInt(request.getParameter("id")));
+        ticket.setEventid(Integer.parseInt(request.getParameter("eventid")));
+        ticket.setInviteid(Integer.parseInt(request.getParameter("inviteid")));
+        ticket.setPrice(Double.parseDouble(request.getParameter("price")));
+        ticket.setStatus(request.getParameter("status"));
+        response.sendRedirect("Ticket.jsp");
+
         try {
-            TicketDAO.addTicket(newTicket);
-            response.sendRedirect("tickets.jsp");
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); // Gérer l'erreur comme vous le souhaitez
+            dao.insertTicket(ticket);
+            List<Ticket> tickets = dao.getAllTickets();
+            request.setAttribute("listbillet", tickets);
+            request.getRequestDispatcher("Ticket.jsp").forward(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer l'erreur en affichant un message d'erreur ou en redirigeant vers une page d'erreur
+            response.sendRedirect("error.jsp");
         }
     }
-    
-    // Méthode pour mettre à jour un billet
-    private void updateTicket(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        // Récupérer les données du formulaire
-        int ticketId = Integer.parseInt(request.getParameter("ticketId"));
-        int eventId = Integer.parseInt(request.getParameter("eventId"));
-        int inviteId = Integer.parseInt(request.getParameter("inviteId"));
-        double price = Double.parseDouble(request.getParameter("price"));
-        String status = request.getParameter("status");
-        
-        // Créer un objet Ticket avec les données récupérées
-        Ticket updatedTicket = new Ticket();
-        updatedTicket.setId(ticketId);
-        updatedTicket.setEventId(eventId);
-        updatedTicket.setInviteId(inviteId);
-        updatedTicket.setPrice(price);
-        updatedTicket.setStatus(status);
-        
-        // Mettre à jour le billet dans la base de données
-        try {
-            TicketDAO.updateTicket(updatedTicket);
-            response.sendRedirect("tickets.jsp");
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); // Gérer l'erreur comme vous le souhaitez
-        }
+
+    private void listTickets(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        List<Ticket> tickets = dao.getAllTickets();
+        request.setAttribute("listTickets", tickets);
+        request.getRequestDispatcher("list_tickets.jsp").forward(request, response);
     }
-    
-    // Méthode pour supprimer un billet
-    private void deleteTicket(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        // Récupérer l'ID du billet à supprimer depuis la requête
-        int ticketId = Integer.parseInt(request.getParameter("ticketId"));
-        
-        // Supprimer le billet de la base de données
-        try {
-            TicketDAO.deleteTicket(ticketId);
-            response.sendRedirect("tickets.jsp");
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); // Gérer l'erreur comme vous le souhaitez
-        }
+
+    private void showAddForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("add_ticket.jsp").forward(request, response);
     }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        // Rediriger vers la page JSP pour l'ajout de billet
-        request.getRequestDispatcher("addTicket.jsp").forward(request, response);
+
+    private void addTicket(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        Ticket ticket = new Ticket();
+        ticket.setEventid(Integer.parseInt(request.getParameter("eventid")));
+        ticket.setInviteid(Integer.parseInt(request.getParameter("inviteid")));
+        ticket.setPrice(Double.parseDouble(request.getParameter("price")));
+        ticket.setStatus(request.getParameter("status"));
+
+        dao.insertTicket(ticket);
+        response.sendRedirect("TicketServlet");
     }
-    
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        int ticketId = Integer.parseInt(request.getParameter("id"));
+        Ticket existingTicket = dao.getTicketById(ticketId);
+        request.setAttribute("ticket", existingTicket);
+        request.getRequestDispatcher("edit_ticket.jsp").forward(request, response);
+    }
+
+    private void updateTicket(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        Ticket ticket = new Ticket();
+        ticket.setId(Integer.parseInt(request.getParameter("id")));
+        ticket.setEventid(Integer.parseInt(request.getParameter("eventid")));
+        ticket.setInviteid(Integer.parseInt(request.getParameter("inviteid")));
+        ticket.setPrice(Double.parseDouble(request.getParameter("price")));
+        ticket.setStatus(request.getParameter("status"));
+
+        dao.updateTicket(ticket);
+        response.sendRedirect("TicketServlet");
+    }
+
+    private void deleteTicket(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        int ticketId = Integer.parseInt(request.getParameter("id"));
+        dao.deleteTicket(ticketId);
+        response.sendRedirect("TicketServlet");
+    }
 }
