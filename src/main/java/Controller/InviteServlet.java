@@ -113,6 +113,6 @@ public class InviteServlet extends HttpServlet {
             throws SQLException, IOException {
         int inviteId = Integer.parseInt(request.getParameter("Inviteid"));
         inviteDAO.deleteInvite(inviteId);
-        response.sendRedirect("EventServlet");
+        response.sendRedirect("InviteServlet");
     }
 }
