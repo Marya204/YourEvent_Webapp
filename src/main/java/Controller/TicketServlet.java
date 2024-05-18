@@ -32,47 +32,47 @@ public class TicketServlet extends HttpServlet {
                     break;
             }
         } else {
-            // Action non spécifiée
+            // Action non spÃ©cifiÃ©e
             response.sendRedirect("tickets.jsp");
         }
     }
     
-    // Méthode pour ajouter un billet
+    // MÃ©thode pour ajouter un billet
     private void addTicket(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        // Récupérer les données du formulaire
+        // RÃ©cupÃ©rer les donnÃ©es du formulaire
         int eventId = Integer.parseInt(request.getParameter("eventId"));
         int inviteId = Integer.parseInt(request.getParameter("inviteId"));
         double price = Double.parseDouble(request.getParameter("price"));
         String status = request.getParameter("status");
         
-        // Créer un nouvel objet Ticket avec les données récupérées
+        // CrÃ©er un nouvel objet Ticket avec les donnÃ©es rÃ©cupÃ©rÃ©es
         Ticket newTicket = new Ticket();
         newTicket.setEventId(eventId);
         newTicket.setInviteId(inviteId);
         newTicket.setPrice(price);
         newTicket.setStatus(status);
         
-        // Ajouter le nouveau billet à la base de données
+        // Ajouter le nouveau billet Ã  la base de donnÃ©es
         try {
             TicketDAO.addTicket(newTicket);
             response.sendRedirect("tickets.jsp");
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); // Gérer l'erreur comme vous le souhaitez
+            e.printStackTrace(); // GÃ©rer l'erreur comme vous le souhaitez
         }
     }
     
-    // Méthode pour mettre à jour un billet
+    // MÃ©thode pour mettre Ã  jour un billet
     private void updateTicket(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        // Récupérer les données du formulaire
+        // RÃ©cupÃ©rer les donnÃ©es du formulaire
         int ticketId = Integer.parseInt(request.getParameter("ticketId"));
         int eventId = Integer.parseInt(request.getParameter("eventId"));
         int inviteId = Integer.parseInt(request.getParameter("inviteId"));
         double price = Double.parseDouble(request.getParameter("price"));
         String status = request.getParameter("status");
         
-        // Créer un objet Ticket avec les données récupérées
+        // CrÃ©er un objet Ticket avec les donnÃ©es rÃ©cupÃ©rÃ©es
         Ticket updatedTicket = new Ticket();
         updatedTicket.setId(ticketId);
         updatedTicket.setEventId(eventId);
@@ -80,27 +80,27 @@ public class TicketServlet extends HttpServlet {
         updatedTicket.setPrice(price);
         updatedTicket.setStatus(status);
         
-        // Mettre à jour le billet dans la base de données
+        // Mettre Ã  jour le billet dans la base de donnÃ©es
         try {
             TicketDAO.updateTicket(updatedTicket);
             response.sendRedirect("tickets.jsp");
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); // Gérer l'erreur comme vous le souhaitez
+            e.printStackTrace(); // GÃ©rer l'erreur comme vous le souhaitez
         }
     }
     
-    // Méthode pour supprimer un billet
+    // MÃ©thode pour supprimer un billet
     private void deleteTicket(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        // Récupérer l'ID du billet à supprimer depuis la requête
+        // RÃ©cupÃ©rer l'ID du billet Ã  supprimer depuis la requÃªte
         int ticketId = Integer.parseInt(request.getParameter("ticketId"));
         
-        // Supprimer le billet de la base de données
+        // Supprimer le billet de la base de donnÃ©es
         try {
             TicketDAO.deleteTicket(ticketId);
             response.sendRedirect("tickets.jsp");
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); // Gérer l'erreur comme vous le souhaitez
+            e.printStackTrace(); // GÃ©rer l'erreur comme vous le souhaitez
         }
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
