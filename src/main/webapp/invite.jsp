@@ -1,5 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -39,5 +37,5 @@
                     </tbody> 
                 </table>
         <a href="AddInvite.jsp" class="btn btn-primary">Add Invite</a>
-        <a href="${pageContext.request.contextPath}/InviteServlet?action=edit&inviteId=${invite.Inviteid}" class="btn btn-primary">Update</a>
+        <a href="UpdateInvite.jsp" class="btn btn-primary">Update Invite</a>
         <a href="${pageContext.request.contextPath}/InviteServlet?action=delete&inviteId=${invite.Inviteid}" class="btn btn-primary">Delete</a>
