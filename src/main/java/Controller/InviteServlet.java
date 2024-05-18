@@ -1,19 +1,16 @@
 package Controller;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import dao.InviteDAO;
+import model.InviteDAO;
 import model.Invite;
 
 @WebServlet(name = "InviteServlet", urlPatterns = {"/InviteServlet"})
@@ -36,7 +33,7 @@ public class InviteServlet extends HttpServlet {
                     showNewForm(request, response);
                     break;
                 case "/add":
-                    addInvite(request, response);
+                    insertInvite(request, response);
                     break;
                 case "/delete":
                     deleteInvite(request, response);
@@ -62,10 +59,10 @@ public class InviteServlet extends HttpServlet {
         doGet(request, response);
     }
 
-    private void listEvent(HttpServletRequest request, HttpServletResponse response)
+    private void listInvite(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<Invite> listevent = inviteDAO.getAllInvite();
-        request.setAttribute("listevent", listinvite);
+        List<Invite> listInvite = inviteDAO.selectAllInvite();
+        request.setAttribute("listInvite", listInvite);
         RequestDispatcher dispatcher = request.getRequestDispatcher("events.jsp");
         dispatcher.forward(request, response);
     }
@@ -78,43 +75,44 @@ public class InviteServlet extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int Inviteid = Integer.parseInt(request.getParameter("Invited"));
-        Invite existingEvent = inviteDAO.getInvite(Inviteid);
+        int inviteId = Integer.parseInt(request.getParameter("Inviteid"));
+        Invite existingInvite = inviteDAO.selectInvite(inviteId);
         RequestDispatcher dispatcher = request.getRequestDispatcher("AddInvite.jsp");
         request.setAttribute("invite", existingInvite);
         dispatcher.forward(request, response);
     }
 
-    private void addInvite(HttpServletRequest request, HttpServletResponse response)
+    private void insertInvite(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        String Name = request.getParameter("Name");
-        String Email = request.getParameter("Email");
-        int Eventid = Integer.parseInt(request.getParameter("Evenid"));
+        String name = request.getParameter("Name");
+        String email = request.getParameter("Email");
+        int eventId = Integer.parseInt(request.getParameter("Evenid"));
 
-        Invite invite = new Invite(Name, Email, Eventid);
+        Invite invite = new Invite(name, email, eventId);
         try {
-            inviteDAO.addInvite(invite);
+            inviteDAO.insertInvite(invite);
             response.sendRedirect("InviteServlet");
         } catch (SQLException e) {
             throw new ServletException(e);
         }
     }
+
     private void updateInvite(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int Inviteid = Integer.parseInt(request.getParameter("Inviteid"));
-        String Name = request.getParameter("Name");
-        String Email = request.getParameter("Email");
-        int Eventid = Integer.parseInt(request.getParameter("Eventid"));
+        int inviteId = Integer.parseInt(request.getParameter("Inviteid"));
+        String name = request.getParameter("Name");
+        String email = request.getParameter("Email");
+        int eventId = Integer.parseInt(request.getParameter("Eventid"));
        
-        Invite invite = new Invite(Inviteid, Name, Email, Eventid);
+        Invite invite = new Invite(inviteId, name, email, eventId);
         inviteDAO.updateInvite(invite);
         response.sendRedirect("InviteServlet");
     }
 
     private void deleteInvite(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int Inviteid = Integer.parseInt(request.getParameter("Inviteid"));
-        inviteDAO.deleteEvent(Inviteid);
+        int inviteId = Integer.parseInt(request.getParameter("Inviteid"));
+        inviteDAO.deleteInvite(inviteId);
         response.sendRedirect("EventServlet");
     }
 }
