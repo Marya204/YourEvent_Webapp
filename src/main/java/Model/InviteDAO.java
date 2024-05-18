@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Invite;
-
 public class InviteDAO {
     private String jdbcURL = "jdbc:mysql://localhost:3306/events";
     private String jdbcUsername = "root";
@@ -35,7 +33,7 @@ public class InviteDAO {
         return connection;
     }
 
-    public void InsertInvite(Invite invite) throws SQLException {
+    public void insertInvite(Invite invite) throws SQLException {
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INVITE_SQL)) {
             preparedStatement.setString(1, invite.getName());
@@ -64,7 +62,7 @@ public class InviteDAO {
     }
 
     public List<Invite> selectAllInvite() {
-        List<Invite> invite = new ArrayList<>();
+        List<Invite> inviteList = new ArrayList<>();
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_INVITE)) {
             ResultSet rs = preparedStatement.executeQuery();
@@ -73,12 +71,12 @@ public class InviteDAO {
                 String Name = rs.getString("Name");
                 String Email = rs.getString("Email");
                 int Eventid = rs.getInt("Eventid");
-                invite.add(new Invite(Inviteid, Name, Email, Eventid));
+                inviteList.add(new Invite(Inviteid, Name, Email, Eventid));
             }
         } catch (SQLException e) {
             printSQLException(e);
         }
-        return invite;
+        return inviteList;
     }
 
     public boolean deleteInvite(int Inviteid) throws SQLException {
