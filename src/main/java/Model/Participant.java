@@ -1,6 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
-import java.sql.Date;
+
 
 public class Participant {
     private int ParticipantID;
@@ -8,46 +12,56 @@ public class Participant {
     private String Email;
     private int Eventid;
     
-    // Parameterized constructor
-    public Event(int ParticipantID, String Name, String Email, int Eventid) {
-        this.ParticipantID=ParticipantID;
-        this.Name=Name;
-        this.eventid = eventid;
+    
+     public Participant() {
     }
+    // Parameterized constructor
+    public Participant(int participantID, String name, String email, int eventid) {
+        this.ParticipantID=participantID;
+        this.Email=email;
+        this.Name=name;
+        this.Eventid = eventid;
+    }
+    
+    public Participant(String name, String email, int eventid) {
+        this.Name=name;
+        this.Email=email;
+        this.Eventid = eventid;
+    }
+    
+    
     // Getters and setters
+    
       public int getParticipantID() {
         return ParticipantID;
     }
 
-    public void setParticipantID(int ParticipantID) {
-        this.ParticipantID = ParticipantID;
+    public void setParticipantID(int participantID) {
+        this.ParticipantID = participantID;
     }
-
+    
     public int getEventid() {
-        return eventid;
+        return Eventid;
     }
 
     public void setEventid(int eventid) {
-        this.eventid = eventid;
+        this.Eventid = eventid;
     }
 
     public String getName() {
         return Name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.Name = name;
     }
 
     public String getEmail() {
         return Email;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setEmail(String email) {
+        this.Email = email;
     }
-
     
-
-    // Add more getters and setters for additional fields as needed
 }
