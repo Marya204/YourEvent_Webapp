@@ -11,7 +11,7 @@ public class ParticipantDAO {
     private static final String INSERT_PARTICIPANT_SQL = "INSERT INTO participant (Name, Email, Eventid) VALUES (?, ?, ?)";
     private static final String SELECT_ALL_PARTICIPANT= "SELECT * FROM participant";
     private static final String SELECT_Participant_By_ID = "SELECT * FROM participant where ParticipantID = ? ";
-        private static final String UPDATE_Participant_SQL = "UPDATE participant SET Name = ?, Email = ?, Eventid = ? WHERE ParticipantID = ?";
+        private static final String UPDATE_PARTICIPANT_SQL = "UPDATE participant SET Name = ?, Email = ?, Eventid = ? WHERE ParticipantID = ?";
     private static final String DELETE_Participant_SQL = "DELETE FROM `participant` WHERE `eventid` = ?;";
 
     public List<Participant> getAllParticipants() {
@@ -20,8 +20,8 @@ public class ParticipantDAO {
          PreparedStatement preparedStatement = conn.prepareStatement(SELECT_ALL_PARTICIPANT)) {
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            int eventid = rs.getInt("eventid");
-           String Email = rs.getString("Email");
+            int Eventid = rs.getInt("eventid");
+            String Email = rs.getString("Email");
             String Name = rs.getString("Name");
             int ParticipantID = rs.getInt("ParticipantID");
 
@@ -38,14 +38,10 @@ public class ParticipantDAO {
     public void addParticipant(Participant participant) throws SQLException {
         System.out.println(INSERT_PARTICIPANT_SQL);
         try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(INSERT_PARTICIPANT_SQL)) {
-            pstmt.setString(1, participant.getTitre());
-            pstmt.setString(2, participant.getDescription());
-            pstmt.setDate(3, new java.sql.Date(participant.getDate().getTime()));
-            pstmt.setString(4, participant.getLieu());
-            pstmt.setString(5, participant.getType());
-            pstmt.setString(6, participant.getStatus());
-            pstmt.setFloat(7, participant.getPrix());
-            pstmt.setInt(8, participant.getCapacite());
+            pstmt.setString(1, participant.getEmail());
+            pstmt.setString(2, participant.getName());
+            pstmt.setInt(3, participant.getParticipantID());
+           
             System.out.println(pstmt);
             pstmt.executeUpdate();
             
@@ -66,13 +62,11 @@ public class ParticipantDAO {
             ResultSet rs = preparedStatement.executeQuery();
             // Step 4: Process the ResultSet object.
             while (rs.next()) {
-                int eventId = rs.getInt("Eventid");
                 String Name = rs.getString("Name");
                 String Email = rs.getString("Email");
-              
-                int ParticipantID = rs.getInt("ParticipantID");
+                int Eventid = rs.getInt("Eventid");
                 
-              participant= new  Participant (Name, Email, Eventid);
+              participant= new  Participant (ParticipantID,Name, Email, Eventid);
                 
             }
         } catch (SQLException e) {
@@ -83,12 +77,12 @@ public class ParticipantDAO {
  
    public void updateParticipant(Participant participant) throws SQLException {
         try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(UPDATE_EVENT_SQL)) {
-            pstmt.setString(1, participant.getName());
-            pstmt.setString(2, participant.getEmail());
+             PreparedStatement pstmt = conn.prepareStatement(UPDATE_PARTICIPANT_SQL)) {
             
-             pstmt.setInt(9, participant.getParticipantID());
-            pstmt.setInt(9, participant.getEventid());
+            pstmt.setInt(1, participant.getParticipantID());
+            pstmt.setString(2, participant.getName());
+            pstmt.setString(3, participant.getEmail());
+            pstmt.setInt(4, participant.getEventid());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             printSQLException(e);
