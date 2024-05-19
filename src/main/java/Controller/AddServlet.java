@@ -34,18 +34,16 @@ public class AddServlet extends HttpServlet {
         String titre = request.getParameter("titre");
         String description = request.getParameter("description");
         String dateString = request.getParameter("date");
-java.sql.Date date = null;
+        java.sql.Date date = null;
 
-try {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    java.util.Date parsedDate = dateFormat.parse(dateString);
-    date = new java.sql.Date(parsedDate.getTime());
-} catch (ParseException e) {
-    e.printStackTrace();
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date parsedDate = dateFormat.parse(dateString);
+            date = new java.sql.Date(parsedDate.getTime());
+        } catch (ParseException e) {
+             e.printStackTrace();
     // Handle parsing error
-}
-
-    
+        }
         String lieu = request.getParameter("lieu");
         String type = request.getParameter("type");
         String status = request.getParameter("status");
