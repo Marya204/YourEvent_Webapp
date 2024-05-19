@@ -2,7 +2,7 @@ package model;
 
 import java.sql.Date;
 
-public class Event {
+public class Participant {
     private int ParticipantID;
      private String Name;
     private String Email;
