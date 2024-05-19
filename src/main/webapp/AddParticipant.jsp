@@ -23,22 +23,22 @@
                       </caption>
                    <form action="ParticipantServlet?action=add" method="post">
                          <c:if test="${participant != null}"> 
-                              <input type="hidden" name="ParticipantID" value="<c:out value='${participant.ParticipantID}' />" />
+                              <input type="hidden" name="participantID" value="<c:out value='${participant.participantID}' />" />
                          </c:if>
 
             <fieldset class="form-group">
                 <label>Name</label> 
-                <input type="text" value="<c:out value='${participant.Name}' />" class="form-control" name="Name" required="required">
+                <input type="text" value="<c:out value='${participant.name}' />" class="form-control" name="name" required="required">
             </fieldset>
 
             <fieldset class="form-group">
                 <label>Email</label> 
-                <input type="text" value="<c:out value='${participant.Email}' />" class="form-control" name="Email">
+                <input type="text" value="<c:out value='${participant.email}' />" class="form-control" name="email">
             </fieldset>
 
             <fieldset class="form-group">
               <label>Eventid</label> 
-              <input type="date" value="<c:out value='${participant.Eventid}' />" class="form-control" name="Eventid">
+              <input type="text" value="<c:out value='${participant.eventid}' />" class="form-control" name="eventid">
             </fieldset>
 
             <button type="submit" class="btn btn-success">Save</button>
