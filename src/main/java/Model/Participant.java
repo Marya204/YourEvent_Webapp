@@ -15,6 +15,14 @@ public class Participant {
         this.eventid = eventid;
     }
     // Getters and setters
+      public int getParticipantID() {
+        return ParticipantID;
+    }
+
+    public void setParticipantID(int ParticipantID) {
+        this.ParticipantID = ParticipantID;
+    }
+
     public int getEventid() {
         return eventid;
     }
