@@ -28,7 +28,7 @@
 
             <fieldset class="form-group">
                 <label>Name</label> 
-                <input type="text" value="<c:out value='${participant.Name}' />" class="form-control" name="titre" required="required">
+                <input type="text" value="<c:out value='${participant.Name}' />" class="form-control" name="Name" required="required">
             </fieldset>
 
             <fieldset class="form-group">
@@ -38,11 +38,8 @@
 
             <fieldset class="form-group">
               <label>Eventid</label> 
-              <input type="date" value="<c:out value='${partciapant.Eventid}' />" class="form-control" name="Eventid">
+              <input type="date" value="<c:out value='${participant.Eventid}' />" class="form-control" name="Eventid">
             </fieldset>
- 
-
-           
 
             <button type="submit" class="btn btn-success">Save</button>
             </form>
@@ -51,4 +48,5 @@
 </div>
 </body>
 </html>
+
 
