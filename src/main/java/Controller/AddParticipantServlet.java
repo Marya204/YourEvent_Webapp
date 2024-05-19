@@ -36,7 +36,7 @@ public class AddParticipantServlet extends HttpServlet {
         int Eventid = request.getParameter("Eventid");
 
      
-        Participant participant = new Participant(titre, description, (java.sql.Date) date, lieu, type, status, prix, capacite);
+        Participant participant = new Participant(Name,Email,Eventid);
 
         // Insert the Participant into the database
         ParticipantDAO participantDAO = new ParticipantDAO();
