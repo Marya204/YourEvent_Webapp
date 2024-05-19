@@ -8,13 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import model.participantDAO;
-import model.participant;
+import model.ParticipantDAO;
+import model.Participant;
 
 @WebServlet(name = "ParticipantServlet", urlPatterns = {"/ParticipantServlet"})
 public class ParticipantServlet extends HttpServlet {
@@ -66,7 +63,7 @@ public class ParticipantServlet extends HttpServlet {
             throws SQLException, IOException, ServletException {
         List<Participant> listparticipant = participantDAO.getAllParticipants();
         request.setAttribute("listparticipant", listparticipant);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("participant.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Participant.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -89,12 +86,11 @@ public class ParticipantServlet extends HttpServlet {
             throws IOException, ServletException {
         String name = request.getParameter("Name");
         String email = request.getParameter("Email");
-        
         int eventId = Integer.parseInt(request.getParameter("Eventid"));
 
         Participant participant = new Participant(name,email,eventId);
         try {
-            participantDAO.addparticipant(participant);
+            participantDAO.addParticipant(participant);
             response.sendRedirect("ParticipantServlet");
         } catch (SQLException e) {
             throw new ServletException(e);
@@ -104,7 +100,7 @@ public class ParticipantServlet extends HttpServlet {
 
     private void updateParticipant(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int Participantid = Integer.parseInt(request.getParameter("ParticipantID"));
+        int ParticipantId = Integer.parseInt(request.getParameter("ParticipantID"));
         String name = request.getParameter("Name");
         String email = request.getParameter("Email");
         int eventId = Integer.parseInt(request.getParameter("Eventid"));
